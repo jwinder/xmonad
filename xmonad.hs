@@ -1,10 +1,9 @@
 import XMonad
 import XMonad.Util.Run
 import XMonad.Util.EZConfig
-import XMonad.Actions.SpawnOn
---import XMonad.Actions.Volume -- this is located in xmonad-extras, get it!
---import XMonad.Util.Dzen
+--import XMonad.Actions.SpawnOn
 import Data.Monoid
+import Control.Comonad
 import System.Environment
 
 -- Nice example: http://www.offensivethinking.org/data/dotfiles/xmonad/xmonad.hs
@@ -15,35 +14,44 @@ main = xmonad $ myConfig
 myConfig = defaultConfig
            { terminal = myTerminal
            , workspaces = myWorkspaces
-           , focusedBorderColor = myFocusedBorderColor
-           , normalBorderColor = myNormalBorderColor
-           , borderWidth = myBorderWidth
-           , modMask = mod4Mask
+           , focusedBorderColor = blue
+           , normalBorderColor = black
+           , borderWidth = 1
+           , modMask = mod4Mask -- masks left-alt to super for xmonad bindings
            , startupHook = myStartupHook
            } `additionalKeysP` myKeyBindings
 
+myWorkspaces = map show $ [1..9] ++ [0]
+
 myKeyBindings =
     [ ("M-C-r", spawn myTerminal)
-    , ("M-C-e", spawn "emacs")
-    , ("M-C-g", spawn "google-chrome")
-    , ("M-C-f", spawn "firefox")
-    , ("M-C-l", spawn "slock") -- simple screen locking
-    , ("M-C-k", spawn "amixer set Master 5%- > /dev/null") -- raise volume
-    , ("M-C-j", spawn "amixer set Master 5%+ > /dev/null") -- lower volume
+    , ("M-C-e", spawn emacs)
+    , ("M-C-g", spawn chrome)
+    , ("M-C-f", spawn firefox)
+    , ("M-C-l", spawn slock)
+    , ("M-C-k", spawn volumeUp)
+    , ("M-C-j", spawn volumeDown)
     ]
 
 myStartupHook = (safeSpawnProg $ home "./.xmonad/startup.sh")
-              >> spawn "gnome-power-settings"
-              >> spawn "nm-applet"
+              >> spawn gnomePowerSettings
+              >> spawn networkManagerApplet
               >> spawn myTerminal
 
---myHome = getEnv "HOME"
+--myHome = extract $ getEnv "HOME"
 myHome = "/home/jwinder"
 home :: String -> String
-home directory = myHome ++ directory
+home = (++) myHome
 
 myTerminal = "terminator"
-myFocusedBorderColor = "#0000FF"
-myNormalBorderColor = "#000000"
-myBorderWidth = 1
-myWorkspaces = map show $ [1..9] ++ [0]
+emacs = "emacs"
+chrome = "google-chrome"
+firefox = "firefox"
+slock = "slock"
+volumeUp = "amixer set Master 5%- > /dev/null"
+volumeDown = "amixer set Master 5%+ > /dev/null"
+gnomePowerSettings = "gnome-power-settings"
+networkManagerApplet = "nm-applet"
+
+blue = "#0000FF"
+black = "#000000"
