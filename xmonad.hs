@@ -3,7 +3,7 @@ import XMonad.Util.Run
 import XMonad.Util.EZConfig
 --import XMonad.Actions.SpawnOn
 import Data.Monoid
-import Control.Comonad
+--import Control.Comonad
 import System.Environment
 
 -- Nice example: http://www.offensivethinking.org/data/dotfiles/xmonad/xmonad.hs
@@ -29,8 +29,8 @@ myKeyBindings =
     , ("M-C-g", spawn chrome)
     , ("M-C-f", spawn firefox)
     , ("M-C-l", spawn slock)
-    , ("M-C-k", spawn volumeUp)
-    , ("M-C-j", spawn volumeDown)
+    , ("M-C-k", spawn volumeDown)
+    , ("M-C-j", spawn volumeUp)
     ]
 
 myStartupHook = (safeSpawnProg $ home "./.xmonad/startup.sh")
@@ -48,8 +48,8 @@ emacs = "emacs"
 chrome = "google-chrome"
 firefox = "firefox"
 slock = "slock"
-volumeUp = "amixer set Master 5%- > /dev/null"
-volumeDown = "amixer set Master 5%+ > /dev/null"
+volumeUp = "amixer set Master 5%+ > /dev/null"
+volumeDown = "amixer set Master 5%- > /dev/null"
 gnomePowerSettings = "gnome-power-settings"
 networkManagerApplet = "nm-applet"
 
