@@ -43,6 +43,7 @@ myKeyBindings =
     , ("M-C-l", spawn slock)
     , ("M-C-k", spawn volumeDown)
     , ("M-C-j", spawn volumeUp)
+    , ("M-C-h", spawn volumeMuteToggle)
     ]
 
 myStartupHook = (safeSpawnProg $ home "/.xmonad/startup.sh")
@@ -57,7 +58,7 @@ myHome :: String
 --myHome = extract $ getEnv "HOME"
 myHome = "/home/jwinder"
 home :: String -> String
-home dir = myHome ++ dir
+home =  (++) myHome
 
 --myStatusBar :: String
 --myStatusBar = "dzen2 -fn '-*-terminus-bold-r-normal-*-10-*-*-*-*-*-*-*' -bg '#000000' -fg '#444444' -h 22 -sa c -x 0 -y 0 -e '' -ta l -xs 1"
@@ -67,8 +68,9 @@ emacs = "emacs"
 chrome = "google-chrome"
 firefox = "firefox"
 slock = "slock"
-volumeUp = "amixer set Master 5%+ > /dev/null"
-volumeDown = "amixer set Master 5%- > /dev/null"
+volumeUp = "amixer set Master 5%+ unmute > /dev/null"
+volumeDown = "amixer set Master 5%- unmute > /dev/null"
+volumeMuteToggle = "amixer sset Master toggle > /dev/null"
 gnomePowerManager = "gnome-power-manager"
 gnomePowerSettings = "gnome-power-settings"
 networkManagerApplet = "nm-applet"
