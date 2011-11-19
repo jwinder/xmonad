@@ -4,29 +4,10 @@ import XMonad.Util.EZConfig
 import XMonad.Actions.CycleWS
 import XMonad.Actions.SpawnOn
 import Data.Monoid
---import qualified Data.Map as M
---import Control.Monad
---import Control.Comonad
 --import System.Environment
-
---import qualified XMonad.Hooks.DynamicLog as DL
 import qualified XMonad.StackSet as W
 
---http://www.dfki.de/~davi01/files/xmonad.hs
-
---If you have a dual monitor setup then you use alt + w to change focus to the left monitor and alt + e to change focus to the right monitor. By default, workspace 1 is on the main monitor, workspace 2 is on the second monitor. To switch the workspaces between monitors, just press alt + 2 or alt + 1.
--- And other cool shit:
---http://www.huntlycameron.co.uk/2010/11/how-to-set-up-xmonad-xmobar-ubuntu/
-
--- Nice example: http://www.offensivethinking.org/data/dotfiles/xmonad/xmonad.hs
--- http://www.haskell.org/haskellwiki/Xmonad/Config_archive
-
---main = do
---  workspaceBarPipe <- spawnPipe myStatusBar
---  xmonad $ myConfig
-
-main = do { spawner <- mkSpawner; xmonad $ myConfig spawner }
---main = mkSpawner >>= (xmonad $ myConfig)
+main = mkSpawner >>= xmonad . myConfig
 
 myConfig spawner = defaultConfig
            { terminal = myTerminal
@@ -62,10 +43,9 @@ myStartupHook spawner = (safeSpawnProg $ home "/.xmonad/startup.sh")
               >> spawn networkManagerApplet
               >> spawnOn spawner five myIm
               >> spawnOn spawner four myIrc
-              >> spawnOn spawner three myEditorInit
+              >> spawnOn spawner three myEditor
               >> spawnOn spawner two myTerminal
               >> spawnOn spawner one myInternet
---              >> spawnToWorkspacesGreedy spawner [myInternet, myTerminal, myEditor, myIrc, myIm]
 
 myHome :: String
 --myHome = extract $ getEnv "HOME"
@@ -73,15 +53,10 @@ myHome = "/home/jwinder"
 home :: String -> String
 home =  (++) myHome
 
---spawnToWorkspacesGreedy :: Spawner -> [String] -> X ()
---spawnToWorkspacesGreedy spawner programs = do { mapM (\p -> spawnOn spawner (fst p) (snd p)) (reverse $ myWorkspaces zip programs); () }
-
---myStatusBar :: String
---myStatusBar = "dzen2 -fn '-*-terminus-bold-r-normal-*-10-*-*-*-*-*-*-*' -bg '#000000' -fg '#444444' -h 22 -sa c -x 0 -y 0 -e '' -ta l -xs 1"
-
 myTerminal = "terminator"
-myEditorInit = "emacs"
-myEditor = "emacsclient -c"
+--myEditorServer = "emacs --daemon"
+myEditor = "emacs"
+--myEditor = "emacsclient -c"
 myInternet = "google-chrome"
 myIrc = "xchat"
 myIm = "pidgin"
