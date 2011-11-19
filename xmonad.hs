@@ -1,13 +1,17 @@
 import XMonad
 import XMonad.Util.Run
 import XMonad.Util.EZConfig
---import XMonad.Actions.SpawnOn
+import XMonad.Actions.CycleWS
 import Data.Monoid
+--import qualified Data.Map as M
 --import Control.Monad
 --import Control.Comonad
-import System.Environment
+--import System.Environment
 
+--import qualified XMonad.Hooks.DynamicLog as DL
 import qualified XMonad.StackSet as W
+
+--http://www.dfki.de/~davi01/files/xmonad.hs
 
 --If you have a dual monitor setup then you use alt + w to change focus to the left monitor and alt + e to change focus to the right monitor. By default, workspace 1 is on the main monitor, workspace 2 is on the second monitor. To switch the workspaces between monitors, just press alt + 2 or alt + 1.
 -- And other cool shit:
@@ -30,12 +34,12 @@ myConfig = defaultConfig
            , borderWidth = 1
            , modMask = mod4Mask -- masks left-alt to super for xmonad bindings
            , startupHook = myStartupHook
-           } `additionalKeysP` myKeyBindings
+           } `additionalKeysP` myPrettyKeys
 
 myWorkspaces :: [String]
-myWorkspaces = [one, two, three, four, five, six, seven, eight, nine, zero]
+myWorkspaces = [one, two, three, four, five, six, seven, eight, nine]
 
-myKeyBindings =
+myPrettyKeys =
     [ ("M-C-r", spawn myTerminal)
     , ("M-C-e", spawn emacs)
     , ("M-C-g", spawn chrome)
@@ -44,15 +48,33 @@ myKeyBindings =
     , ("M-C-k", spawn volumeDown)
     , ("M-C-j", spawn volumeUp)
     , ("M-C-h", spawn volumeMuteToggle)
+    , ("M-i", nextWS)
+    , ("M-u", prevWS)
+    , ("M-S-i", shiftToNext)
+    , ("M-S-u", shiftToPrev)
     ]
 
 myStartupHook = (safeSpawnProg $ home "/.xmonad/startup.sh")
               >> spawn gnomePowerManager
               >> spawn gnomePowerSettings
               >> spawn networkManagerApplet
-              >> onWorkspace one >> spawn chrome
+              >> spawn chorome
+
+--              >> windows $ onWorkspace six W.swapDown . W.shift six >> spawn chrome
+--              >> spawnToWorkspace six chrome
+--              >> spawn myTerminal
+--              >> moveTo Next EmptyWS
+--              >> windows W.focusDown >> moveTo Next EmptyWS >> spawn chrome
+--              >> windows W.focusDown >> moveTo Next EmptyWS >> spawn myTerminal
+--              >> spawn myTerminal
+--              >> toggleOrView eight
 
 onWorkspace = \ws -> windows $ W.greedyView ws
+
+spawnOnWorkspace = \ws prog -> do { windows $ W.greedyView ws; spawn prog }
+
+spawnToWorkspace :: String -> String -> X ()
+spawnToWorkspace ws prog = do { spawn prog; windows $ W.greedyView ws }
 
 myHome :: String
 --myHome = extract $ getEnv "HOME"
@@ -69,7 +91,7 @@ chrome = "google-chrome"
 firefox = "firefox"
 slock = "slock"
 volumeUp = "amixer set Master 5%+ unmute > /dev/null"
-volumeDown = "amixer set Master 5%- unmute > /dev/null"
+volumeDown = "amixer set Master 5%- > /dev/null"
 volumeMuteToggle = "amixer sset Master toggle > /dev/null"
 gnomePowerManager = "gnome-power-manager"
 gnomePowerSettings = "gnome-power-settings"
@@ -87,4 +109,3 @@ six = "6"
 seven = "7"
 eight = "8"
 nine = "9"
-zero = "0"
