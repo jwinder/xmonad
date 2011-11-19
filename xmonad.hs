@@ -2,6 +2,7 @@ import XMonad
 import XMonad.Util.Run
 import XMonad.Util.EZConfig
 import XMonad.Actions.CycleWS
+import XMonad.Actions.SpawnOn
 import Data.Monoid
 --import qualified Data.Map as M
 --import Control.Monad
@@ -24,16 +25,18 @@ import qualified XMonad.StackSet as W
 --  workspaceBarPipe <- spawnPipe myStatusBar
 --  xmonad $ myConfig
 
-main = xmonad $ myConfig
+main = do { spawner <- mkSpawner; xmonad $ myConfig spawner }
+--main = mkSpawner >>= (xmonad $ myConfig)
 
-myConfig = defaultConfig
+myConfig spawner = defaultConfig
            { terminal = myTerminal
            , workspaces = myWorkspaces
            , focusedBorderColor = blue
            , normalBorderColor = black
            , borderWidth = 1
            , modMask = mod4Mask -- masks left-alt to super for xmonad bindings
-           , startupHook = myStartupHook
+           , manageHook = manageSpawn spawner <+> manageHook defaultConfig
+           , startupHook = myStartupHook spawner
            } `additionalKeysP` myPrettyKeys
 
 myWorkspaces :: [String]
@@ -41,10 +44,9 @@ myWorkspaces = [one, two, three, four, five, six, seven, eight, nine]
 
 myPrettyKeys =
     [ ("M-C-r", spawn myTerminal)
-    , ("M-C-e", spawn emacs)
-    , ("M-C-g", spawn chrome)
-    , ("M-C-f", spawn firefox)
-    , ("M-C-l", spawn slock)
+    , ("M-C-e", spawn myEditor)
+    , ("M-C-g", spawn myInternet)
+    , ("M-C-l", spawn lockScreen)
     , ("M-C-k", spawn volumeDown)
     , ("M-C-j", spawn volumeUp)
     , ("M-C-h", spawn volumeMuteToggle)
@@ -54,27 +56,16 @@ myPrettyKeys =
     , ("M-S-u", shiftToPrev)
     ]
 
-myStartupHook = (safeSpawnProg $ home "/.xmonad/startup.sh")
+myStartupHook spawner = (safeSpawnProg $ home "/.xmonad/startup.sh")
               >> spawn gnomePowerManager
               >> spawn gnomePowerSettings
               >> spawn networkManagerApplet
-              >> spawn chorome
-
---              >> windows $ onWorkspace six W.swapDown . W.shift six >> spawn chrome
---              >> spawnToWorkspace six chrome
---              >> spawn myTerminal
---              >> moveTo Next EmptyWS
---              >> windows W.focusDown >> moveTo Next EmptyWS >> spawn chrome
---              >> windows W.focusDown >> moveTo Next EmptyWS >> spawn myTerminal
---              >> spawn myTerminal
---              >> toggleOrView eight
-
-onWorkspace = \ws -> windows $ W.greedyView ws
-
-spawnOnWorkspace = \ws prog -> do { windows $ W.greedyView ws; spawn prog }
-
-spawnToWorkspace :: String -> String -> X ()
-spawnToWorkspace ws prog = do { spawn prog; windows $ W.greedyView ws }
+              >> spawnOn spawner five myIm
+              >> spawnOn spawner four myIrc
+              >> spawnOn spawner three myEditorInit
+              >> spawnOn spawner two myTerminal
+              >> spawnOn spawner one myInternet
+--              >> spawnToWorkspacesGreedy spawner [myInternet, myTerminal, myEditor, myIrc, myIm]
 
 myHome :: String
 --myHome = extract $ getEnv "HOME"
@@ -82,14 +73,19 @@ myHome = "/home/jwinder"
 home :: String -> String
 home =  (++) myHome
 
+--spawnToWorkspacesGreedy :: Spawner -> [String] -> X ()
+--spawnToWorkspacesGreedy spawner programs = do { mapM (\p -> spawnOn spawner (fst p) (snd p)) (reverse $ myWorkspaces zip programs); () }
+
 --myStatusBar :: String
 --myStatusBar = "dzen2 -fn '-*-terminus-bold-r-normal-*-10-*-*-*-*-*-*-*' -bg '#000000' -fg '#444444' -h 22 -sa c -x 0 -y 0 -e '' -ta l -xs 1"
 
 myTerminal = "terminator"
-emacs = "emacs"
-chrome = "google-chrome"
-firefox = "firefox"
-slock = "slock"
+myEditorInit = "emacs"
+myEditor = "emacsclient -c"
+myInternet = "google-chrome"
+myIrc = "xchat"
+myIm = "pidgin"
+lockScreen = "slock"
 volumeUp = "amixer set Master 5%+ unmute > /dev/null"
 volumeDown = "amixer set Master 5%- > /dev/null"
 volumeMuteToggle = "amixer sset Master toggle > /dev/null"
