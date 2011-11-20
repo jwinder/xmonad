@@ -4,21 +4,21 @@ import XMonad.Util.EZConfig
 import XMonad.Actions.CycleWS
 import XMonad.Actions.SpawnOn
 import Data.Monoid
---import System.Environment
+import System.Environment
 import qualified XMonad.StackSet as W
 
 main = mkSpawner >>= xmonad . myConfig
 
 myConfig spawner = defaultConfig
-           { terminal = myTerminal
-           , workspaces = myWorkspaces
-           , focusedBorderColor = blue
-           , normalBorderColor = black
-           , borderWidth = 1
-           , modMask = mod4Mask -- masks left-alt to super for xmonad bindings
-           , manageHook = manageSpawn spawner <+> manageHook defaultConfig
-           , startupHook = myStartupHook spawner
-           } `additionalKeysP` myPrettyKeys
+	   { terminal = myTerminal
+	   , workspaces = myWorkspaces
+	   , focusedBorderColor = blue
+	   , normalBorderColor = black
+	   , borderWidth = 1
+	   , modMask = mod4Mask -- masks left-alt to super for xmonad bindings
+	   , manageHook = manageSpawn spawner <+> manageHook defaultConfig
+	   , startupHook = myStartupHook spawner
+	   } `additionalKeysP` myPrettyKeys
 
 myWorkspaces :: [String]
 myWorkspaces = [one, two, three, four, five, six, seven, eight, nine]
@@ -38,25 +38,24 @@ myPrettyKeys =
     ]
 
 myStartupHook spawner = (safeSpawnProg $ home "/.xmonad/startup.sh")
-              >> spawn gnomePowerManager
-              >> spawn gnomePowerSettings
-              >> spawn networkManagerApplet
-              >> spawnOn spawner five myIm
-              >> spawnOn spawner four myIrc
-              >> spawnOn spawner three myEditor
-              >> spawnOn spawner two myTerminal
-              >> spawnOn spawner one myInternet
+                >> spawn gnomePowerManager
+		>> spawn gnomePowerSettings
+		>> spawn networkManagerApplet
+		>> spawnOn spawner five myIm
+		>> spawnOn spawner four myIrc
+		>> spawnOn spawner three myEditorInit
+		>> spawnOn spawner two myTerminal
+		>> spawnOn spawner one myInternet
 
-myHome :: String
---myHome = extract $ getEnv "HOME"
+--spawnFromHome prog = getEnv "HOME" >>= (\home -> safeSpawnProg $ home ++ prog)
+
 myHome = "/home/jwinder"
 home :: String -> String
 home =  (++) myHome
 
 myTerminal = "terminator"
---myEditorServer = "emacs --daemon"
-myEditor = "emacs"
---myEditor = "emacsclient -c"
+myEditorInit = "emacs" -- "emacs --daemon"
+myEditor = "emacsclient -c"
 myInternet = "google-chrome"
 myIrc = "xchat"
 myIm = "pidgin"
