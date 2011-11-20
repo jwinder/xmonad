@@ -10,15 +10,15 @@ import Data.Monoid
 main = mkSpawner >>= xmonad . myConfig
 
 myConfig spawner = defaultConfig
-	   { terminal = myTerminal
-	   , workspaces = myWorkspaces
-	   , focusedBorderColor = blue
-	   , normalBorderColor = black
-	   , borderWidth = 1
-	   , modMask = mod4Mask -- masks left-alt to super for xmonad bindings
-	   , manageHook = manageSpawn spawner <+> manageHook defaultConfig
-	   , startupHook = myStartupHook spawner
-	   } `additionalKeysP` myPrettyKeys
+                   { terminal = myTerminal
+                   , workspaces = myWorkspaces
+                   , focusedBorderColor = blue
+                   , normalBorderColor = black
+                   , borderWidth = 1
+                   , modMask = mod4Mask -- masks left-alt to super for xmonad bindings
+                   , manageHook = manageSpawn spawner <+> manageHook defaultConfig
+                   , startupHook = myStartupHook spawner
+                   } `additionalKeysP` myPrettyKeys
 
 myWorkspaces :: [String]
 myWorkspaces = [one, two, three, four, five, six, seven, eight, nine]
@@ -38,14 +38,14 @@ myPrettyKeys =
     ]
 
 myStartupHook spawner = (safeSpawnProg $ home "/.xmonad/keymappings.sh")
-                >> spawn gnomePowerManager
-		>> spawn gnomePowerSettings
-		>> spawn networkManagerApplet
-		>> spawnOn spawner five myIm
-		>> spawnOn spawner four myIrc
-		>> spawnOn spawner three myEditorInit
-		>> spawnOn spawner two myTerminal
-		>> spawnOn spawner one myInternet
+                        >> spawn gnomePowerManager
+                        >> spawn gnomePowerSettings
+                        >> spawn networkManagerApplet
+                        >> spawnOn spawner five myIm
+                        >> spawnOn spawner four myIrc
+                        >> spawnOn spawner three myEditorInit
+                        >> spawnOn spawner two myTerminal
+                        >> spawnOn spawner one myInternet
 
 --spawnFromHome prog = getEnv "HOME" >>= (\home -> safeSpawnProg $ home ++ prog)
 
