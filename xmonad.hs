@@ -4,8 +4,8 @@ import XMonad.Util.EZConfig
 import XMonad.Actions.CycleWS
 import XMonad.Actions.SpawnOn
 import Data.Monoid
-import System.Environment
-import qualified XMonad.StackSet as W
+--import System.Environment
+--import qualified XMonad.StackSet as W
 
 main = mkSpawner >>= xmonad . myConfig
 
@@ -37,7 +37,7 @@ myPrettyKeys =
     , ("M-S-u", shiftToPrev)
     ]
 
-myStartupHook spawner = (safeSpawnProg $ home "/.xmonad/startup.sh")
+myStartupHook spawner = (safeSpawnProg $ home "/.xmonad/keymappings.sh")
                 >> spawn gnomePowerManager
 		>> spawn gnomePowerSettings
 		>> spawn networkManagerApplet
