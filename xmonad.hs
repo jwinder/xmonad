@@ -18,13 +18,15 @@ myConfig spawner = defaultConfig
                    , modMask = mod4Mask -- masks left-alt to super for xmonad bindings
                    , manageHook = manageSpawn spawner <+> manageHook defaultConfig
                    , startupHook = myStartupHook spawner
-                   } `additionalKeysP` myPrettyKeys
+                   } `removeKeysP` myRemoveKeysP
+                     `additionalKeysP` myAdditionalKeysP
 
 myWorkspaces :: [String]
 myWorkspaces = [one, two, three, four, five, six, seven, eight, nine]
 
-myPrettyKeys =
-    [ ("M-C-r", spawn myTerminal)
+myAdditionalKeysP =
+    [ ("M-p", spawn myMenu)
+    , ("M-C-r", spawn myTerminal)
     , ("M-C-e", spawn myEditor)
     , ("M-C-g", spawn myInternet)
     , ("M-C-l", spawn lockScreen)
@@ -36,6 +38,8 @@ myPrettyKeys =
     , ("M-S-i", shiftToNext)
     , ("M-S-u", shiftToPrev)
     ]
+
+myRemoveKeysP = ["M-q"]
 
 myStartupHook spawner = (safeSpawnProg $ home "/.xmonad/keymappings.sh")
                         >> spawn gnomePowerManager
@@ -53,6 +57,7 @@ myHome = "/home/jwinder"
 home :: String -> String
 home =  (++) myHome
 
+myMenu = "dmenu_run"
 myTerminal = "terminator"
 myEditorInit = "emacs" -- "emacs --daemon"
 myEditor = "emacsclient -c"
