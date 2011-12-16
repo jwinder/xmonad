@@ -45,8 +45,7 @@ myStartupHook spawner = (safeSpawnProg $ home "/.xmonad/keymappings.sh")
                         >> spawn gnomePowerManager
                         >> spawn gnomePowerSettings
                         >> spawn networkManagerApplet
-                        >> spawnOn spawner five myIm
-                        >> spawnOn spawner four myIrc
+                        >> spawnOn spawner four myIm
                         >> spawnOn spawner three myEditorInit
                         >> spawnOn spawner two myTerminal
                         >> spawnOn spawner one myInternet
