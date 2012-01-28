@@ -3,6 +3,7 @@ import XMonad.Util.Run
 import XMonad.Util.EZConfig
 import XMonad.Actions.CycleWS
 import XMonad.Actions.SpawnOn
+import XMonad.Hooks.SetWMName
 import Data.Monoid
 --import System.Environment
 --import qualified XMonad.StackSet as W
@@ -14,18 +15,18 @@ myConfig spawner = defaultConfig
                    , workspaces = myWorkspaces
                    , focusedBorderColor = blue
                    , normalBorderColor = black
-                   , borderWidth = 1
+                   , borderWidth = 2
                    , modMask = mod4Mask -- masks left-alt to super for xmonad bindings
                    , manageHook = manageSpawn spawner <+> manageHook defaultConfig
                    , startupHook = myStartupHook spawner
                    } `removeKeysP` myRemoveKeysP
                      `additionalKeysP` myAdditionalKeysP
 
-myWorkspaces :: [String]
 myWorkspaces = [one, two, three, four, five, six, seven, eight, nine]
 
 myAdditionalKeysP =
     [ ("M-p", spawn myMenu)
+    , ("M-S-w", spawn shutdownSystem)
     , ("M-C-r", spawn myTerminal)
     , ("M-C-e", spawn myEditor)
     , ("M-C-g", spawn myInternet)
@@ -41,10 +42,12 @@ myAdditionalKeysP =
 
 myRemoveKeysP = ["M-q"]
 
-myStartupHook spawner = (safeSpawnProg $ home "/.xmonad/keymappings.sh")
+myStartupHook spawner = setWMName "LG3D"
+                        >> (safeSpawnProg $ home "/.xmonad/keymappings.sh")
                         >> spawn gnomePowerManager
                         >> spawn gnomePowerSettings
                         >> spawn networkManagerApplet
+                        >> spawnOn spawner nine nvidiaMenu
                         >> spawnOn spawner four myIm
                         >> spawnOn spawner three myTerminal
                         >> spawnOn spawner two myEditorInit
@@ -53,12 +56,12 @@ myStartupHook spawner = (safeSpawnProg $ home "/.xmonad/keymappings.sh")
 --spawnFromHome prog = getEnv "HOME" >>= (\home -> safeSpawnProg $ home ++ prog)
 
 myHome = "/home/jwinder"
-home :: String -> String
 home =  (++) myHome
 
 myMenu = "dmenu_run"
+shutdownSystem = "dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop"
 myTerminal = "terminator"
-myEditorInit = "emacs" -- "emacs --daemon"
+myEditorInit = "emacs"
 myEditor = "emacsclient -c"
 myInternet = "google-chrome"
 myIrc = "xchat"
@@ -70,6 +73,7 @@ volumeMuteToggle = "amixer sset Master toggle > /dev/null"
 gnomePowerManager = "gnome-power-manager"
 gnomePowerSettings = "gnome-power-settings"
 networkManagerApplet = "nm-applet"
+nvidiaMenu = "nvidia-settings"
 
 blue = "#0000FF"
 black = "#000000"
