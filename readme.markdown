@@ -1,7 +1,7 @@
 Inside my ~/.xmonad folder
 ==========================
 
-Simple Install for Ubuntu
+Simple install for ubuntu
 =========================
 * to get xmonad
   * `apt-get install xmonad`
