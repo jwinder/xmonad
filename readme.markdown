@@ -1,6 +1,5 @@
 # Inside my ~/.xmonad folder
 
-
 ## Simple install for ubuntu
 
 to get xmonad
