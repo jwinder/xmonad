@@ -43,21 +43,18 @@ myAdditionalKeysP =
 myRemoveKeysP = ["M-q"]
 
 myStartupHook spawner = setWMName "LG3D"
-                        >> (safeSpawnProg $ home "/.xmonad/keymappings.sh")
+                        >> spawn keyMappings
                         >> spawn gnomePowerManager
                         >> spawn gnomePowerSettings
                         >> spawn networkManagerApplet
+                        >> spawn dropboxStart
                         >> spawnOn spawner nine nvidiaMenu
                         >> spawnOn spawner four myIm
                         >> spawnOn spawner three myTerminal
                         >> spawnOn spawner two myEditorInit
                         >> spawnOn spawner one myInternet
 
---spawnFromHome prog = getEnv "HOME" >>= (\home -> safeSpawnProg $ home ++ prog)
-
-myHome = "/home/jwinder"
-home =  (++) myHome
-
+keyMappings = "$HOME/.xmonad/keymappings.sh"
 myMenu = "dmenu_run"
 shutdownSystem = "dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop"
 myTerminal = "terminator"
@@ -73,6 +70,7 @@ volumeMuteToggle = "amixer sset Master toggle > /dev/null"
 gnomePowerManager = "gnome-power-manager"
 gnomePowerSettings = "gnome-power-settings"
 networkManagerApplet = "nm-applet"
+dropboxStart = "python $HOME/bin/dropbox.py start"
 nvidiaMenu = "nvidia-settings"
 
 blue = "#0000FF"
