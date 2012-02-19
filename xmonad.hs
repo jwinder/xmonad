@@ -11,14 +11,14 @@ import Data.Monoid
 main = mkSpawner >>= xmonad . myConfig
 
 myConfig spawner = defaultConfig
-                   { terminal = myTerminal
-                   , workspaces = myWorkspaces
+                   { terminal           = myTerminal
+                   , workspaces         = myWorkspaces
                    , focusedBorderColor = blue
-                   , normalBorderColor = black
-                   , borderWidth = 2
-                   , modMask = mod4Mask -- masks left-alt to super for xmonad bindings
-                   , manageHook = manageSpawn spawner <+> manageHook defaultConfig
-                   , startupHook = myStartupHook spawner
+                   , normalBorderColor  = black
+                   , borderWidth        = 2
+                   , modMask            = mod4Mask -- masks left-alt to super for xmonad bindings
+                   , manageHook         = manageSpawn spawner <+> manageHook defaultConfig
+                   , startupHook        = myStartupHook spawner
                    } `removeKeysP` myRemoveKeysP
                      `additionalKeysP` myAdditionalKeysP
 
@@ -54,34 +54,34 @@ myStartupHook spawner = setWMName "LG3D"
                         >> spawnOn spawner two myEditorInit
                         >> spawnOn spawner one myInternet
 
-keyMappings = "$HOME/.xmonad/keymappings.sh"
-myMenu = "dmenu_run"
-shutdownSystem = "dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop"
-myTerminal = "terminator"
-myEditorInit = "emacs"
-myEditor = "emacsclient -c"
-myInternet = "google-chrome"
-myIrc = "xchat"
-myIm = "pidgin"
-lockScreen = "slock"
-volumeUp = "amixer set Master 5%+ unmute > /dev/null"
-volumeDown = "amixer set Master 5%- > /dev/null"
-volumeMuteToggle = "amixer sset Master toggle > /dev/null"
-gnomePowerManager = "gnome-power-manager"
-gnomePowerSettings = "gnome-power-settings"
+keyMappings          = "$HOME/.xmonad/keymappings.sh"
+myMenu               = "dmenu_run"
+shutdownSystem       = "dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop"
+myTerminal           = "terminator"
+myEditorInit         = "emacs"
+myEditor             = "emacsclient -c"
+myInternet           = "google-chrome"
+myIrc                = "xchat"
+myIm                 = "pidgin"
+lockScreen           = "slock"
+volumeUp             = "amixer set Master 5%+ unmute > /dev/null"
+volumeDown           = "amixer set Master 5%- > /dev/null"
+volumeMuteToggle     = "amixer sset Master toggle > /dev/null"
+gnomePowerManager    = "gnome-power-manager"
+gnomePowerSettings   = "gnome-power-settings"
 networkManagerApplet = "nm-applet"
-dropboxStart = "python $HOME/bin/dropbox.py start"
-nvidiaMenu = "nvidia-settings"
+dropboxStart         = "python $HOME/bin/dropbox.py start"
+nvidiaMenu           = "nvidia-settings"
 
-blue = "#0000FF"
+blue  = "#0000FF"
 black = "#000000"
 
-one = "1"
-two = "2"
+one   = "1"
+two   = "2"
 three = "3"
-four = "4"
-five = "5"
-six = "6"
+four  = "4"
+five  = "5"
+six   = "6"
 seven = "7"
 eight = "8"
-nine = "9"
+nine  = "9"
