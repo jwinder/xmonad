@@ -27,7 +27,7 @@ myWorkspaces = [one, two, three, four, five, six, seven, eight, nine]
 myAdditionalKeysP =
     [ ("M-p", spawn myMenu)
     , ("M-S-w", spawn shutdownSystem)
-    , ("M-C-t", spawn myTerminal)
+    , ("M-C-r", spawn myTerminal)
     , ("M-C-e", spawn myEditor)
     , ("M-C-g", spawn myInternet)
     , ("M-C-l", spawn lockScreen)
