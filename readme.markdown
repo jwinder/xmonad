@@ -6,10 +6,6 @@ to get xmonad
 
 * `apt-get install xmonad`
 
-to select xmonad from login screen
-
-* `apt-get install dwm-tools`
-
 download the config
 
 * `git clone git://github.com:jwinder/xmonad.git $HOME/.xmonad`
