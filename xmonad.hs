@@ -27,13 +27,13 @@ myWorkspaces = [one, two, three, four, five, six, seven, eight, nine]
 myAdditionalKeysP =
     [ ("M-p", spawn myMenu)
     , ("M-S-w", spawn shutdownSystem)
-    , ("M-C-r", spawn myTerminal)
+    , ("M-C-t", spawn myTerminal)
     , ("M-C-e", spawn myEditor)
     , ("M-C-g", spawn myInternet)
     , ("M-C-l", spawn lockScreen)
-    , ("M-C-k", spawn volumeDown)
-    , ("M-C-j", spawn volumeUp)
-    , ("M-C-h", spawn volumeMuteToggle)
+--    , ("M-C-k", spawn volumeDown)
+--    , ("M-C-j", spawn volumeUp)
+--    , ("M-C-h", spawn volumeMuteToggle)
     , ("M-i", nextWS)
     , ("M-u", prevWS)
     , ("M-S-i", shiftToNext)
@@ -43,26 +43,27 @@ myAdditionalKeysP =
 myRemoveKeysP = ["M-q"]
 
 myStartupHook spawner = setWMName "LG3D"
+--                        >> spawn "gnome-session"
+                        >> spawn "gnome-settings-daemon"
                         >> spawn keyMappings
-                        >> spawn gnomePowerManager
-                        >> spawn gnomePowerSettings
-                        >> spawn networkManagerApplet
-                        >> spawn dropboxStart
-                        >> spawnOn spawner nine nvidiaMenu
-                        >> spawnOn spawner four myIm
-                        >> spawnOn spawner three myTerminal
-                        >> spawnOn spawner two myEditorInit
-                        >> spawnOn spawner one myInternet
+--                        >> spawn gnomePowerManager
+--                        >> spawn gnomePowerSettings
+--                        >> spawn networkManagerApplet
+--                        >> spawn dropboxStart
+--                        >> spawnOn spawner nine nvidiaMenu
+--                        >> spawnOn spawner four myIm
+--                        >> spawnOn spawner three myTerminal
+--                        >> spawnOn spawner two myEditorInit
+--                        >> spawnOn spawner one myInternet
 
 keyMappings          = "$HOME/.xmonad/keymappings.sh"
 myMenu               = "dmenu_run"
 shutdownSystem       = "dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop"
-myTerminal           = "terminator"
+myTerminal           = "gnome-terminal"
 myEditorInit         = "emacs"
 myEditor             = "emacsclient -c"
 myInternet           = "google-chrome"
-myIrc                = "xchat"
-myIm                 = "pidgin"
+--myIm                 = "pidgin"
 lockScreen           = "slock"
 volumeUp             = "amixer set Master 5%+ unmute > /dev/null"
 volumeDown           = "amixer set Master 5%- > /dev/null"
