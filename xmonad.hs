@@ -8,6 +8,9 @@ import Data.Monoid
 --import System.Environment
 --import qualified XMonad.StackSet as W
 
+-- xcompmgr, cairo-compmgr, or maybe dcompmgr for transparent windows!
+-- http://www.haskell.org/haskellwiki/Xmonad/Frequently_asked_questions
+
 main = mkSpawner >>= xmonad . myConfig
 
 myConfig spawner = defaultConfig
@@ -40,10 +43,11 @@ myAdditionalKeysP =
 myRemoveKeysP = ["M-q"]
 
 myStartupHook spawner = setWMName "LG3D"
+                        >> spawn "feh --bg-scale $HOME/.xmonad/background.png"
+                        >> spawn "xcompmgr &"
                         >> spawn "gnome-settings-daemon"
                         >> spawn "$HOME/.xmonad/keymappings.sh"
                         >> spawn "sleep 3s"
---                        >> spawn "$HOME/.xmonad/session.sh"
 --                        >> spawn dropboxStart
                         >> spawnOn spawner nine nvidiaMenu
                         >> spawnOn spawner four myIm
