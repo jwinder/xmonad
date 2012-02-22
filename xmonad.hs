@@ -8,9 +8,6 @@ import Data.Monoid
 --import System.Environment
 --import qualified XMonad.StackSet as W
 
--- xcompmgr, cairo-compmgr, or maybe dcompmgr for transparent windows!
--- http://www.haskell.org/haskellwiki/Xmonad/Frequently_asked_questions
-
 main = mkSpawner >>= xmonad . myConfig
 
 myConfig spawner = defaultConfig
