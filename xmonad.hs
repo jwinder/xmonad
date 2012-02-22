@@ -48,7 +48,7 @@ myStartupHook spawner = setWMName "LG3D"
                         >> spawn "gnome-settings-daemon"
                         >> spawn "$HOME/.xmonad/keymappings.sh"
                         >> spawn "sleep 3s"
---                        >> spawn dropboxStart
+                        >> spawn "python $HOME/bin/dropbox.py start"
                         >> spawnOn spawner nine nvidiaMenu
                         >> spawnOn spawner four myIm
                         >> spawnOn spawner three myTerminal
@@ -63,7 +63,6 @@ myEditor             = "emacsclient -c"
 myInternet           = "google-chrome"
 myIm                 = "pidgin"
 lockScreen           = "slock"
-dropboxStart         = "python $HOME/bin/dropbox.py start"
 nvidiaMenu           = "nvidia-settings"
 
 blue  = "#0000FF"
