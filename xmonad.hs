@@ -27,6 +27,7 @@ myAdditionalKeysP =
     , ("M-S-w", spawn shutdownSystem)
     , ("M-C-r", spawn myTerminal)
     , ("M-C-e", spawn myEditor)
+    , ("M-C-t", spawn myEditorInit)
     , ("M-C-g", spawn myInternet)
     , ("M-C-l", spawn lockScreen)
     , ("M-i", nextWS)
