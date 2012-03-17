@@ -5,8 +5,6 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.SpawnOn
 import XMonad.Hooks.SetWMName
 import Data.Monoid
---import System.Environment
---import qualified XMonad.StackSet as W
 
 main = mkSpawner >>= xmonad . myConfig
 
@@ -42,9 +40,10 @@ myRemoveKeysP = ["M-q"]
 myStartupHook spawner = setWMName "LG3D"
                         >> spawn "feh --bg-scale $HOME/.xmonad/background.png"
                         >> spawn "xcompmgr &"
-                        >> spawn "gnome-settings-daemon"
+                        >> spawn "gnome-settings-daemon" -- shortcuts: M-C-h toggle volume, M-C-j raise volume, M-C-k lower volume
+                        >> spawn "nm-applet"
                         >> spawn "$HOME/.xmonad/keymappings.sh"
-                        >> spawn "sleep 3s"
+                        >> spawn "sleep 4s"
                         >> spawn "python $HOME/bin/dropbox.py start"
                         >> spawnOn spawner nine nvidiaMenu
                         >> spawnOn spawner four myIm
@@ -52,15 +51,15 @@ myStartupHook spawner = setWMName "LG3D"
                         >> spawnOn spawner two myEditorInit
                         >> spawnOn spawner one myInternet
 
-myMenu               = "dmenu_run"
-shutdownSystem       = "dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop"
-myTerminal           = "gnome-terminal"
-myEditorInit         = "emacs"
-myEditor             = "emacsclient -c"
-myInternet           = "google-chrome"
-myIm                 = "pidgin"
-lockScreen           = "slock"
-nvidiaMenu           = "nvidia-settings"
+myMenu         = "dmenu_run"
+shutdownSystem = "dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop"
+myTerminal     = "gnome-terminal"
+myEditorInit   = "emacs"
+myEditor       = "emacsclient -c"
+myInternet     = "google-chrome"
+myIm           = "pidgin"
+lockScreen     = "slock"
+nvidiaMenu     = "nvidia-settings"
 
 blue  = "#0000FF"
 black = "#000000"
