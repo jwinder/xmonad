@@ -29,7 +29,6 @@ myAdditionalKeysP =
     , ("M-C-e", spawn myEditor)
     , ("M-C-t", spawn myEditorInit)
     , ("M-C-g", spawn myInternet)
-    , ("M-C-l", spawn lockScreen)
     , ("M-i", nextWS)
     , ("M-u", prevWS)
     , ("M-S-i", shiftToNext)
@@ -40,16 +39,15 @@ myRemoveKeysP = ["M-q"]
 
 myStartupHook spawner = setWMName "LG3D"
                         >> spawn "feh --bg-scale $HOME/.xmonad/background.png"
-                        >> spawn "xcompmgr &"
+                        >> spawn "xcompmgr"
                         >> spawn "gnome-settings-daemon" -- shortcuts: M-C-h toggle volume, M-C-j raise volume, M-C-k lower volume
                         >> spawn "nm-applet"
                         >> spawn "$HOME/.xmonad/keymappings.sh"
-                        >> spawn "sleep 4s"
                         >> spawn "python $HOME/bin/dropbox.py start"
                         >> spawnOn spawner nine nvidiaMenu
-                        >> spawnOn spawner four myIm
+                        >> spawnOn spawner four myMusic
                         >> spawnOn spawner three myTerminal
-                        >> spawnOn spawner two myEditorInit
+                        -- >> spawnOn spawner two myEditorInit
                         >> spawnOn spawner one myInternet
 
 myMenu         = "dmenu_run"
@@ -59,7 +57,7 @@ myEditorInit   = "emacs"
 myEditor       = "emacsclient -c"
 myInternet     = "google-chrome"
 myIm           = "pidgin"
-lockScreen     = "slock"
+myMusic        = "audacious"
 nvidiaMenu     = "nvidia-settings"
 
 blue  = "#0000FF"
