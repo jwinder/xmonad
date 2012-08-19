@@ -1,34 +1,31 @@
 import XMonad
-import XMonad.Util.Run
 import XMonad.Util.EZConfig
 import XMonad.Actions.CycleWS
 import XMonad.Actions.SpawnOn
 import XMonad.Hooks.SetWMName
 import Data.Monoid
 
-main = mkSpawner >>= xmonad . myConfig
-
-myConfig spawner = defaultConfig
-                   { terminal           = myTerminal
-                   , workspaces         = myWorkspaces
-                   , focusedBorderColor = blue
-                   , normalBorderColor  = black
-                   , borderWidth        = 2
-                   , modMask            = mod4Mask -- masks left-alt to super for xmonad bindings
-                   , manageHook         = manageSpawn spawner <+> manageHook defaultConfig
-                   , startupHook        = myStartupHook spawner
-                   } `removeKeysP` myRemoveKeysP
-                     `additionalKeysP` myAdditionalKeysP
+main = xmonad $ defaultConfig
+       { terminal           = myTerminal
+       , workspaces         = myWorkspaces
+       , focusedBorderColor = blue
+       , normalBorderColor  = black
+       , borderWidth        = 2
+       , modMask            = mod4Mask -- masks left-alt to super for xmonad bindings
+       , manageHook         = manageSpawn <+> manageHook defaultConfig
+       , startupHook        = myStartupHook
+       } `removeKeysP` myRemoveKeysP
+         `additionalKeysP` myAdditionalKeysP
 
 myWorkspaces = [one, two, three, four, five, six, seven, eight, nine]
 
 myAdditionalKeysP =
-    [ ("M-p", spawn myMenu)
-    , ("M-S-w", spawn shutdownSystem)
-    , ("M-C-r", spawn myTerminal)
-    , ("M-C-e", spawn myEditor)
-    , ("M-C-t", spawn myEditorInit)
-    , ("M-C-g", spawn myInternet)
+    [ ("M-p", spawnHere myMenu)
+    , ("M-S-w", spawnHere shutdownSystem)
+    , ("M-C-r", spawnHere myTerminal)
+    , ("M-C-e", spawnHere myEditor)
+    , ("M-C-t", spawnHere myEditorInit)
+    , ("M-C-g", spawnHere myInternet)
     , ("M-i", nextWS)
     , ("M-u", prevWS)
     , ("M-S-i", shiftToNext)
@@ -37,18 +34,18 @@ myAdditionalKeysP =
 
 myRemoveKeysP = ["M-q"]
 
-myStartupHook spawner = setWMName "LG3D"
-                        >> spawn "feh --bg-scale $HOME/.xmonad/background.png"
-                        >> spawn "xcompmgr"
-                        >> spawn "gnome-settings-daemon" -- shortcuts: M-C-h toggle volume, M-C-j raise volume, M-C-k lower volume
-                        >> spawn "nm-applet"
-                        >> spawn "$HOME/.xmonad/keymappings.sh"
-                        >> spawn "python $HOME/bin/dropbox.py start"
-                        >> spawnOn spawner nine nvidiaMenu
-                        >> spawnOn spawner four myMusic
-                        >> spawnOn spawner three myTerminal
-                        -- >> spawnOn spawner two myEditorInit
-                        >> spawnOn spawner one myInternet
+myStartupHook = setWMName "LG3D"
+                >> spawnHere "gnome-settings-daemon"
+                >> spawnHere "feh --bg-scale $HOME/.xmonad/background.png"
+                >> spawnHere "xcompmgr"
+                >> spawnHere "python $HOME/bin/dropbox.py start"
+                >> spawnHere "$HOME/.xmonad/keymappings.sh"
+                >> spawnHere "$HOME/.xmonad/brightness.sh"
+                >> spawnOn nine nvidiaMenu
+                >> spawnOn four myMusic
+                >> spawnOn three myTerminal
+--                >> spawnOn two myEditorInit
+                >> spawnOn one myInternet
 
 myMenu         = "dmenu_run"
 shutdownSystem = "dbus-send --system --print-reply --dest=\"org.freedesktop.ConsoleKit\" /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop"
@@ -58,7 +55,9 @@ myEditor       = "emacsclient -c"
 myInternet     = "google-chrome"
 myIm           = "pidgin"
 myMusic        = "audacious"
+
 nvidiaMenu     = "nvidia-settings"
+gnomeControl   = "gnome-control-center"
 
 blue  = "#0000FF"
 black = "#000000"
