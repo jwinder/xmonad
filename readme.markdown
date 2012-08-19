@@ -1,20 +1,6 @@
-# Inside my ~/.xmonad folder
+# my ~/x.monad
 
-## What worked for me in ubuntu 11.10:
-
-to get xmonad
-
-* `apt-get install xmonad`
-
-download the config
-
-* `git clone git://github.com/jwinder/xmonad.git $HOME/.xmonad`
-
-to manage wallpaper and transparency
-
-* `apt-get install feh`
-* `apt-get install xcompmgr`
-
-command-line tool for checking battery life, cpu temp, etc.
-
-* `apt-get install acpi`
+* build xmonad from source or `apt-get install xmonad`
+* `apt-get install xcompmgr` for compositing and transparency
+* `apt-get install feh` for background
+* `apt-get install acpi` command-line tool for acpi info
