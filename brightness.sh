@@ -3,6 +3,7 @@
 # janky way to adjust the brightness
 # since my laptop always thinks it needs to boot up with 100% backlight
 
+sleep 4
 brightness=`cat /sys/class/backlight/acpi_video0/brightness`
 desired=3
 count=$(( $brightness - $desired ))
