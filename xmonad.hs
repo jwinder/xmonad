@@ -36,11 +36,12 @@ myRemoveKeysP = ["M-q"]
 
 myStartupHook = setWMName "LG3D"
                 >> spawnHere "gnome-settings-daemon"
+                >> spawnHere "nm-applet"
                 >> spawnHere "feh --bg-scale $HOME/.xmonad/background.png"
                 >> spawnHere "xcompmgr"
                 >> spawnHere "python $HOME/bin/dropbox.py start"
                 >> spawnHere "$HOME/.xmonad/keymappings.sh"
-                >> spawnHere "$HOME/.xmonad/brightness.sh"
+                >> spawnHere "sleep 15; $HOME/.xmonad/brightness.sh"
                 >> spawnOn nine nvidiaMenu
                 >> spawnOn four myMusic
                 >> spawnOn three myTerminal
