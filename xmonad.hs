@@ -40,7 +40,7 @@ myStartupHook = setWMName "LG3D"
                 >> spawnHere "feh --bg-scale $HOME/.xmonad/background.png"
                 >> spawnHere "xcompmgr"
                 >> spawnHere "python $HOME/bin/dropbox.py start"
-                >> spawnHere "cp $HOME/Dropbox/Me/junk/passwords/passwords.json.cpt $HOME/bin/passwords/bak/`date +%s`-passwords.json.cpt"
+                >> spawnHere "$HOME/.xmonad/passbackups.sh"
                 >> spawnHere "$HOME/.xmonad/keymappings.sh"
                 >> spawnHere "sleep 15; $HOME/.xmonad/brightness.sh"
                 >> spawnOn nine nvidiaMenu
